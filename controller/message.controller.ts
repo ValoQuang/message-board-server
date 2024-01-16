@@ -1,13 +1,25 @@
 import { Request, Response } from "express";
 
 interface ChannelStorage {
-    [channel: string]: { text: string }[];
-  }
+  [channel: string]: { text: string }[];
+}
 
 const channelStorage: ChannelStorage = {
   channel1: [],
   channel2: [],
   channel3: [],
+};
+
+export const getAllChannels = async (res: Response) => {
+  try {
+    const channels = Object.keys(channelStorage);
+    return res
+      .status(200)
+      .json(channels);
+
+  } catch (error) {}
+  const channels = Object.keys(channelStorage);
+  res.json(channels);
 };
 
 export const createMessage = async (req: Request, res: Response) => {
