@@ -48,11 +48,10 @@ export const createMessage = async (req: Request, res: Response) => {
   try {
     const channel = req.params.channel;
     const messageText = req.body;
-    channelStorage[channel].push({ id: Date.now(), text: messageText });
-
+    channelStorage[channel].push({ id: Date.now(), text: messageText.note });
     return res.status(201).json({
       code: res.statusCode,
-      message: "message registered successfully",
+      message: messageText
     });
   } catch (error) {
     res.status(500).json({
