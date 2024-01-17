@@ -5,9 +5,9 @@ interface ChannelStorage {
 }
 
 const channelStorage: ChannelStorage = {
-  "channel-1": [{ id: Date.now(), text: "test text from channel 1" }],
-  "channel-2": [{ id: Date.now(), text: "test text from channel 2" }],
-  "channel-3": [{ id: Date.now(), text: "test text from channel 3" }],
+  "channel-1": [],
+  "channel-2": [],
+  "channel-3": [],
 };
 
 export const getAllChannels = async (req: Request, res: Response) => {
