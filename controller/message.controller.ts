@@ -13,9 +13,10 @@ const channelStorage: ChannelStorage = {
 
 export const getAllChannels = async (req: Request, res: Response) => {
   try {
+    const channelList = Object.keys(channelStorage)
     return res
       .status(200)
-      .json({ code: res.statusCode, payload: channelStorage });
+      .json({ code: res.statusCode, payload: channelList });
   } catch (error) {
     res.status(500).json({
       code: res.statusCode,
