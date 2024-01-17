@@ -1,8 +1,8 @@
-const express = require("express");
-const app = express();
-const messageRouter = require('./routes/message.route');
-const cors = require("cors");
+import express from "express";
+import cors from 'cors';
+import messageRouter from './routes/message.route';
 
+const app = express();
 app.use(express.json());
 app.use(cors());
 
