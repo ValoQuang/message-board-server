@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { v4 as uuidv4 } from 'uuid';
 
 interface ChannelStorage {
-  [channel: string]: { id: string; text: string, createdAt: number }[];
+  [channel: string]: { id: string; message: string, createdAt: number }[];
 }
 
 const channelStorage: ChannelStorage = {
@@ -49,7 +49,7 @@ export const createMessage = async (req: Request, res: Response) => {
   try {
     const channel = req.params.channel;
     const messageText = req.body;
-    channelStorage[channel].unshift({ id: uuidv4(), createdAt: Date.now(), text: messageText.note });
+    channelStorage[channel].unshift({ id: uuidv4(), createdAt: Date.now(), message: messageText.note });
     return res.status(201).json({
       code: res.statusCode,
       message: messageText
