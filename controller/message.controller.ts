@@ -12,7 +12,9 @@ const channelStorage: ChannelStorage = {
 
 export const getAllChannels = async (req: Request, res: Response) => {
   try {
-    return res.status(200).json(channelStorage);
+    return res
+      .status(200)
+      .json({ code: res.statusCode, payload: channelStorage });
   } catch (error) {
     res.status(500).json({
       code: res.statusCode,
@@ -26,11 +28,14 @@ export const getMessageFromChannel = async (req: Request, res: Response) => {
     const channel = req.params.channel;
     if (!channelStorage[channel]) {
       channelStorage[channel] = [];
+      return res.status(404).json({
+        code: res.statusCode,
+        payload: "Channel not found, check your server",
+      });
+    } else {
+      const response = Object.values(channelStorage[channel]);
+      return res.status(200).json({ code: res.statusCode, payload: response });
     }
-    const response = Object.values(channelStorage[channel]);
-    return res
-    .status(200)
-    .json({ response });
   } catch (error) {
     res.status(500).json({
       code: res.statusCode,
@@ -43,16 +48,12 @@ export const createMessage = async (req: Request, res: Response) => {
   try {
     const channel = req.params.channel;
     const messageText = req.body;
-
-    if (!channelStorage[channel]) {
-      channelStorage[channel] = [];
-    }
     channelStorage[channel].push({ id: Date.now(), text: messageText });
 
-    return res
-      .status(201)
-      .send("Message added successfully")
-      .json({ code: res.statusCode, message: "User registered successfully" });
+    return res.status(201).json({
+      code: res.statusCode,
+      message: "message registered successfully",
+    });
   } catch (error) {
     res.status(500).json({
       code: res.statusCode,
