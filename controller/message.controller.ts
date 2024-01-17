@@ -24,7 +24,6 @@ export const getAllChannels = async (req: Request, res: Response) => {
 export const getMessageFromChannel = async (req: Request, res: Response) => {
   try {
     const channel = req.params.channel;
-    //find a channel //return a message from that param channel
     if (!channelStorage[channel]) {
       channelStorage[channel] = [];
     }
