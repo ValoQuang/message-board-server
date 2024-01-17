@@ -1,47 +1,63 @@
 import { Request, Response } from "express";
 
 interface ChannelStorage {
-  [channel: string]: { text: string }[];
+  [channel: string]: { id: number; text: string }[];
 }
 
 const channelStorage: ChannelStorage = {
-  channel1: [],
-  channel2: [],
-  channel3: [],
+  "channel-1": [{ id: Date.now(), text: "test text from channel 1" }],
+  "channel-2": [{ id: Date.now(), text: "test text from channel 2" }],
+  "channel-3": [{ id: Date.now(), text: "test text from channel 3" }],
 };
 
-export const getAllChannels = async (res: Response) => {
+export const getAllChannels = async (req: Request, res: Response) => {
   try {
-    const channels = Object.keys(channelStorage);
-    return res
-      .status(200)
-      .json(channels);
+    return res.status(200).json(channelStorage);
+  } catch (error) {
+    res.status(500).json({
+      code: res.statusCode,
+      error: "An error occurred while getting channels",
+    });
+  }
+};
 
-  } catch (error) {}
-  const channels = Object.keys(channelStorage);
-  res.json(channels);
+export const getMessageFromChannel = async (req: Request, res: Response) => {
+  try {
+    const channel = req.params.channel;
+    //find a channel //return a message from that param channel
+    if (!channelStorage[channel]) {
+      channelStorage[channel] = [];
+    }
+    const response = Object.values(channelStorage[channel]);
+    return res
+    .status(200)
+    .json({ response });
+  } catch (error) {
+    res.status(500).json({
+      code: res.statusCode,
+      error: `An error occured while retrieving (GET) message for channel ${req.params.channel}`,
+    });
+  }
 };
 
 export const createMessage = async (req: Request, res: Response) => {
   try {
     const channel = req.params.channel;
-    const messageText = req.body.message;
+    const messageText = req.body;
 
     if (!channelStorage[channel]) {
       channelStorage[channel] = [];
     }
-    channelStorage[channel].push({ text: messageText });
+    channelStorage[channel].push({ id: Date.now(), text: messageText });
 
-    res.send("Message added successfully");
     return res
       .status(201)
       .send("Message added successfully")
       .json({ code: res.statusCode, message: "User registered successfully" });
   } catch (error) {
-    console.error("Error creating message", error);
     res.status(500).json({
       code: res.statusCode,
-      error: "An error occurred while create message",
+      error: `An error occured while creating (POST) message for channel ${req.params.channel}`,
     });
   }
 };
