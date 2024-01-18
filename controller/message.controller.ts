@@ -61,7 +61,7 @@ export const createMessage = async (req: Request, res: Response) => {
     });
     return res.status(201).json({
       code: res.statusCode,
-      message: messageText,
+      message: messageText.note,
     });
   } catch (error) {
     res.status(500).json({
