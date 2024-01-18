@@ -1,8 +1,13 @@
 import { Request, Response } from "express";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 interface ChannelStorage {
-  [channel: string]: { id: string; message: string, createdAt: number }[];
+  [channel: string]: {
+    postedBy: string;
+    message: string;
+    id: string;
+    createdAt: number;
+  }[];
 }
 
 const channelStorage: ChannelStorage = {
@@ -13,10 +18,8 @@ const channelStorage: ChannelStorage = {
 
 export const getAllChannels = async (req: Request, res: Response) => {
   try {
-    const channelList = Object.keys(channelStorage)
-    return res
-      .status(200)
-      .json({ code: res.statusCode, payload: channelList });
+    const channelList = Object.keys(channelStorage);
+    return res.status(200).json({ code: res.statusCode, payload: channelList });
   } catch (error) {
     res.status(500).json({
       code: res.statusCode,
@@ -50,10 +53,15 @@ export const createMessage = async (req: Request, res: Response) => {
   try {
     const channel = req.params.channel;
     const messageText = req.body;
-    channelStorage[channel].unshift({ id: uuidv4(), createdAt: Date.now(), message: messageText.note });
+    channelStorage[channel].unshift({
+      id: uuidv4(),
+      createdAt: Date.now(),
+      message: messageText.note,
+      postedBy: "",
+    });
     return res.status(201).json({
       code: res.statusCode,
-      message: messageText
+      message: messageText,
     });
   } catch (error) {
     res.status(500).json({
