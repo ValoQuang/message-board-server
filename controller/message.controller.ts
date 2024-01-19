@@ -61,7 +61,7 @@ export const createMessage = async (req: Request, res: Response) => {
     });
     return res.status(201).json({
       code: res.statusCode,
-      message: messageText.note,
+      payload: channelStorage[channel][0],
     });
   } catch (error) {
     res.status(500).json({
