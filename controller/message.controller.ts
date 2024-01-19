@@ -57,7 +57,7 @@ export const createMessage = async (req: Request, res: Response) => {
       id: uuidv4(),
       createdAt: Date.now(),
       message: messageText.note,
-      postedBy: "",
+      postedBy: messageText.postedBy || 'Anonymous remote user',
     });
     return res.status(201).json({
       code: res.statusCode,
