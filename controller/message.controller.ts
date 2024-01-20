@@ -56,7 +56,7 @@ export const createMessage = async (req: Request, res: Response) => {
     channelStorage[channel].unshift({
       id: uuidv4(),
       createdAt: Date.now(),
-      message: messageText.note,
+      message: messageText.message,
       postedBy: messageText.postedBy || 'Anonymous remote user',
     });
     return res.status(201).json({
