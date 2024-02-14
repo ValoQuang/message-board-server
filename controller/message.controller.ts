@@ -1,20 +1,6 @@
 import { Request, Response } from "express";
 import { v4 as uuidv4 } from "uuid";
-
-interface ChannelStorage {
-  [channel: string]: {
-    postedBy: string;
-    message: string;
-    id: string;
-    createdAt: number;
-  }[];
-}
-
-const channelStorage: ChannelStorage = {
-  "channel-1": [],
-  "channel-2": [],
-  "channel-3": [],
-};
+import { channelStorage } from "../models/message.model";
 
 export const getAllChannels = async (req: Request, res: Response) => {
   try {
@@ -59,6 +45,9 @@ export const createMessage = async (req: Request, res: Response) => {
       message: messageText.message,
       postedBy: messageText.postedBy || 'Anonymous remote user',
     });
+    if (!messageText) {
+      
+    }
     return res.status(201).json({
       code: res.statusCode,
       payload: channelStorage[channel][0],
